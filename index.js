@@ -11,7 +11,7 @@ app.get('/events', (req, res) => {
     return res.send(events)
 })
 app.get('/messages', (req, res) => {
-    return res.json({messages})
+    return res.send(messages)
 })
 
 app.listen(port, () => { console.log(`Server is running: http://localhost:${port}`) })
