@@ -6,7 +6,7 @@
 ## Instalação
 1. Clonar repositório:
    ```bash
-   git clone https://github.com/FbianoG/Chat-Bot-Telegram.git
+   git clone https://github.com/FbianoG/ChatBot-Telegram.git
    
 2. Instalar dependências:
    ```bash
