@@ -82,7 +82,7 @@ async function eventTelegram(client, event) {
         if (msg?.media?.className === 'MessageMediaPhoto') {
             let response
             
-            const mimeType = msg.media.photo.mimeType.split('/')[1]
+            const mimeType = 'jpg'
             const photo = msg.media.photo
             const buffer = await client.downloadMedia(photo)
             const tempDocPath = `./public/documents/temp-doc.${mimeType}`
