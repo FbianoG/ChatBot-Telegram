@@ -6,7 +6,23 @@ const channels = [
     {
         name: 'ChatRecebe',
         id: '2134377722'
-    }
+    },
+    {
+        name: 'Dupla Futebol',
+        id: '1214308482'
+    },
+    {
+        name: 'Dupla Basquete',
+        id: '1216091692'
+    },
+    {
+        name: 'Dupla FIFA',
+        id: '1355848104'
+    },
+    {
+        name: 'Dupla Galgos',
+        id: '1270361246'
+    },
 ]
 
 // Function find the channel ID
