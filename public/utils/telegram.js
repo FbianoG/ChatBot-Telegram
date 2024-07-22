@@ -63,11 +63,13 @@ async function eventTelegram(client, event) {
         // Receive documents
         if (msg?.media?.className === 'MessageMediaDocument') {
             let response
+            
             const mimeType = msg.media.document.mimeType.split('/')[1]
             const doc = event.message.media.document
             // const buffer = await client.downloadMedia(doc)
             // const tempDocPath = `./public/documents/temp-doc.${mimeType}`
             // fs.writeFileSync(tempDocPath, buffer)fs.writeFileSync(tempDocPath, buffer)
+            
             if (!msg.message) response = await client.sendFile(chatSendId, { file: doc, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__` }) // messageless
             if (msg.message) response = await client.sendFile(chatSendId, { file: doc, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}` }) // with message
             const msgObj = { id: response.id, fromId: msg.id, chatId: msg.peerId.channelId.value.toString(), message: msg.message }
@@ -79,9 +81,11 @@ async function eventTelegram(client, event) {
         // Receive photo
         if (msg?.media?.className === 'MessageMediaPhoto') {
             let response
+            
+            const mimeType = msg.media.document.mimeType.split('/')[1]
             const photo = msg.media.photo
-              const buffer = await client.downloadMedia(photo)
-             const tempDocPath = `./public/documents/temp-doc.${mimeType}`
+            const buffer = await client.downloadMedia(photo)
+            const tempDocPath = `./public/documents/temp-doc.${mimeType}`
             fs.writeFileSync(tempDocPath, buffer)
             
             if (!msg.message) response = await client.sendFile(chatSendId, { file: tempDocPath, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__` }) // messageless
