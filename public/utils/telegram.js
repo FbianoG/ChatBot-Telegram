@@ -4,7 +4,7 @@ const fs = require('fs')
 const { TelegramClient } = require('telegram')
 const { StringSession } = require('telegram/sessions')
 const input = require('input')
-const findChannel = require('./channels')
+const { findChannel } = require('./channels')
 
 const chatSendId = process.env.CHAT_SEND_ID
 const apiId = Number(process.env.API_ID)

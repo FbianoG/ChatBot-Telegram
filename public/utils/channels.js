@@ -11,9 +11,10 @@ const channels = [
 
 // Function find the channel ID
 function findChannel(id) {
-    const channnel = channels.find(element => element.id == id)
+    const channel = channels.find(element => element.id == id)
     console.log(id)
-    return channnel.name
+    if (channel) return ''
+    return channel.name
 }
 
-module.exports = findChannel
+module.exports = {findChannel}
