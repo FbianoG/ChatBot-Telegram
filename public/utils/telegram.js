@@ -18,11 +18,16 @@ const channels = [
     {
         name: 'ChatTeste',
         id: '2153116950'
+    },
+    {
+        name: 'ChatRecebe',
+        id: '2134377722'
     }
 ]
 
 function findChannel(id) {
-    const channnel = channels.find(element => element.id === id)
+    const channnel = channels.find(element => element.id == id)
+    console.log(id)
     return channnel.name
 }
 
@@ -64,6 +69,8 @@ async function eventTelegram(client, event) {
         if (event.className === 'UpdateUserStatus' && !event.message) return
 
         const msg = event.message
+
+        // console.log(msg.peerId)
 
         events.push(new Date(), msg)
 
@@ -109,7 +116,7 @@ async function eventTelegram(client, event) {
                     console.log('Msg comum c/ reply enviada! (s/ dados)')
                 }
             } else {
-                response = await client.sendMessage(chatSendId, { message: `From: ${findChannel(msg.peerId.channelId)}\n${msg.message}` })
+                response = await client.sendMessage(chatSendId, { message: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}` })
                 console.log('Msg comum enviada!')
             }
             const msgObj = { id: response.id, fromId: msg.id, chatId: msg.peerId.channelId.value.toString(), message: msg.message }
