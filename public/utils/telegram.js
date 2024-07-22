@@ -14,6 +14,17 @@ let stringSession
 
 let events = [{ ServerStart: new Date() }] // List of Client events
 let messages = []
+const channels = [
+    {
+        name: 'ChatTeste',
+        id: '2153116950'
+    }
+]
+
+function findChannel(id) {
+    const channnel = channels.find(element => element.id === id)
+    return channnel.name
+}
 
 
 // Function to start the Client of Telegram
@@ -61,6 +72,9 @@ async function eventTelegram(client, event) {
             let response
             const mimeType = msg.media.document.mimeType.split('/')[1]
             const doc = event.message.media.document
+            // const buffer = await client.downloadMedia(doc)
+            // const tempDocPath = `./public/documents/temp-doc.${mimeType}`
+            // fs.writeFileSync(tempDocPath, buffer)fs.writeFileSync(tempDocPath, buffer)
             if (!msg.message) response = await client.sendFile(chatSendId, { file: doc }) // messageless
             if (msg.message) response = await client.sendFile(chatSendId, { file: doc, caption: msg.message }) // with message
             const msgObj = { id: response.id, fromId: msg.id, chatId: msg.peerId.channelId.value.toString(), message: msg.message }
@@ -95,7 +109,7 @@ async function eventTelegram(client, event) {
                     console.log('Msg comum c/ reply enviada! (s/ dados)')
                 }
             } else {
-                response = await client.sendMessage(chatSendId, { message: msg.message })
+                response = await client.sendMessage(chatSendId, { message: `From: ${findChannel(msg.peerId.channelId)}\n${msg.message}` })
                 console.log('Msg comum enviada!')
             }
             const msgObj = { id: response.id, fromId: msg.id, chatId: msg.peerId.channelId.value.toString(), message: msg.message }
