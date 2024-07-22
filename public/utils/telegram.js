@@ -59,7 +59,7 @@ async function eventTelegram(client, event) {
 
         // console.log(msg.peerId)
 
-        events.push(new Date(), msg)
+        // events.push(new Date(), msg)
 
         // Receive documents
         if (msg?.media?.className === 'MessageMediaDocument') {
