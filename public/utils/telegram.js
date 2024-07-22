@@ -107,6 +107,7 @@ async function eventTelegram(client, event) {
         if (typeof msg === 'string') {
             await client.sendMessage(chatSendId, { message: msg, quotedMessageId: 73 })
             console.log('Msg comum enviada!')
+            const msgObj = { id: response.id, fromId: msg.id, chatId: msg.peerId.channelId.value.toString(), message: msg.message }
             return
         }
 
