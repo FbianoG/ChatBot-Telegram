@@ -34,6 +34,11 @@ const channels = [
         id: '1221399350',
         active: true,
     },
+    {
+        name: 'Dupla E-Sports 🎮',
+        id: '1480220495n',
+        active: false,
+    },
 ]
 
 function channelActive(id) {

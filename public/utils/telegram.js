@@ -53,8 +53,8 @@ async function eventTelegram(client, event) {
         if (event.className === 'UpdateUserStatus' && !event.message) return
 
         const msg = event.message
-        
-        if (!channelActive()) return
+
+        if (!channelActive(msg.peerId.channelId.value)) return
 
         // events.push(new Date(), msg)
 
