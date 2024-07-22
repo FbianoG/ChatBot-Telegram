@@ -80,7 +80,7 @@ async function eventTelegram(client, event) {
         if (msg?.media?.className === 'MessageMediaPhoto') {
             let response
             const photo = msg.media.photo
-              const buffer = await client.downloadMedia(doc)
+              const buffer = await client.downloadMedia(photo)
              const tempDocPath = `./public/documents/temp-doc.${mimeType}`
             fs.writeFileSync(tempDocPath, buffer)
             
