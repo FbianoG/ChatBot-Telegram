@@ -13,7 +13,7 @@ const bot = new Telegraf(process.env.BOT_TOKEN)
 
 let stringSession
 
-let events = [{ ServerStart: new Date() }] // List of Client events
+// let events = [{ ServerStart: new Date() }]
 let messages = []
 
 
@@ -71,7 +71,7 @@ async function eventTelegram(client, event) {
             // fs.writeFileSync(tempDocPath, buffer)fs.writeFileSync(tempDocPath, buffer)
             if (!msg.message) response = await client.sendFile(chatSendId, { file: doc, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__` }) // messageless
             if (msg.message) response = await client.sendFile(chatSendId, { file: doc, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}` }) // with message
-            // const msgObj = { id: response.id, fromId: msg.id, chatId: msg.peerId.channelId.value.toString(), message: msg.message }
+            const msgObj = { id: response.id, fromId: msg.id, chatId: msg.peerId.channelId.value.toString(), message: msg.message }
             console.log(`Msg com '${mimeType}' enviada!`)
             return
         }
@@ -82,7 +82,7 @@ async function eventTelegram(client, event) {
             const photo = msg.media.photo
             if (!msg.message) response = await client.sendFile(chatSendId, { file: photo, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__` }) // messageless
             if (msg.message) response = await client.sendFile(chatSendId, { file: photo, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}` }) // with message
-            // const msgObj = { id: response.id, fromId: msg.id, chatId: msg.peerId.channelId.value.toString(), message: msg.message }
+            const msgObj = { id: response.id, fromId: msg.id, chatId: msg.peerId.channelId.value.toString(), message: msg.message }
             console.log('Msg com foto enviada!')
             return
         }
@@ -104,7 +104,7 @@ async function eventTelegram(client, event) {
                 response = await client.sendMessage(chatSendId, { message: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}` })
                 console.log('Msg comum enviada!')
             }
-            // const msgObj = { id: response.id, fromId: msg.id, chatId: msg.peerId.channelId.value.toString(), message: msg.message }
+            const msgObj = { id: response.id, fromId: msg.id, chatId: msg.peerId.channelId.value.toString(), message: msg.message }
             return
         }
 
@@ -112,7 +112,7 @@ async function eventTelegram(client, event) {
         if (typeof msg === 'string') {
             await client.sendMessage(chatSendId, { message: msg, quotedMessageId: 73 })
             console.log('Msg comum enviada!')
-            // const msgObj = { id: response.id, fromId: msg.id, chatId: msg.peerId.channelId.value.toString(), message: msg.message }
+            const msgObj = { id: response.id, fromId: msg.id, chatId: msg.peerId.channelId.value.toString(), message: msg.message }
             return
         }
 
