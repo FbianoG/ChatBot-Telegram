@@ -4,6 +4,7 @@ const fs = require('fs')
 const { TelegramClient } = require('telegram')
 const { StringSession } = require('telegram/sessions')
 const input = require('input')
+const findChannel = require('./channels')
 
 const chatSendId = process.env.CHAT_SEND_ID
 const apiId = Number(process.env.API_ID)
@@ -14,22 +15,8 @@ let stringSession
 
 let events = [{ ServerStart: new Date() }] // List of Client events
 let messages = []
-const channels = [
-    {
-        name: 'ChatTeste',
-        id: '2153116950'
-    },
-    {
-        name: 'ChatRecebe',
-        id: '2134377722'
-    }
-]
 
-function findChannel(id) {
-    const channnel = channels.find(element => element.id == id)
-    console.log(id)
-    return channnel.name
-}
+
 
 
 // Function to start the Client of Telegram
@@ -82,7 +69,7 @@ async function eventTelegram(client, event) {
             // const buffer = await client.downloadMedia(doc)
             // const tempDocPath = `./public/documents/temp-doc.${mimeType}`
             // fs.writeFileSync(tempDocPath, buffer)fs.writeFileSync(tempDocPath, buffer)
-            if (!msg.message) response = await client.sendFile(chatSendId, { file: doc }) // messageless
+            if (!msg.message) response = await client.sendFile(chatSendId, { file: doc, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__` }) // messageless
             if (msg.message) response = await client.sendFile(chatSendId, { file: doc, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}` }) // with message
             const msgObj = { id: response.id, fromId: msg.id, chatId: msg.peerId.channelId.value.toString(), message: msg.message }
             messages.push(msgObj)
@@ -94,7 +81,7 @@ async function eventTelegram(client, event) {
         if (msg?.media?.className === 'MessageMediaPhoto') {
             let response
             const photo = msg.media.photo
-            if (!msg.message) response = await client.sendFile(chatSendId, { file: photo, caption: '' }) // messageless
+            if (!msg.message) response = await client.sendFile(chatSendId, { file: photo, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__` }) // messageless
             if (msg.message) response = await client.sendFile(chatSendId, { file: photo, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}` }) // with message
             const msgObj = { id: response.id, fromId: msg.id, chatId: msg.peerId.channelId.value.toString(), message: msg.message }
             messages.push(msgObj)
@@ -112,7 +99,7 @@ async function eventTelegram(client, event) {
                     response = await client.sendMessage(chatSendId, { message: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}`, replyTo: msgReply.id })
                     console.log('Msg comum c/ reply enviada!')
                 } else { // reply not found in the Database, but is reply
-                    response = await client.sendMessage(chatSendId, { message: msg.message })
+                    response = await client.sendMessage(chatSendId, { message: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}` })
                     console.log('Msg comum c/ reply enviada! (s/ dados)')
                 }
             } else {
