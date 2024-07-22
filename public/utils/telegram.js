@@ -57,8 +57,6 @@ async function eventTelegram(client, event) {
 
         const msg = event.message
 
-        // console.log(msg.peerId)
-
         // events.push(new Date(), msg)
 
         // Receive documents
@@ -121,4 +119,4 @@ async function eventTelegram(client, event) {
     }
 }
 
-module.exports = { startTelegramClient, events, messages }
+module.exports = { startTelegramClient, messages }
