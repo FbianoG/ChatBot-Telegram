@@ -1,5 +1,4 @@
 /node_modules/
 /.env
-/public/documents
 /public/img
-/public/keys/session.txt
+# /public/keys/session.txt
