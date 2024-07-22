@@ -80,8 +80,13 @@ async function eventTelegram(client, event) {
         if (msg?.media?.className === 'MessageMediaPhoto') {
             let response
             const photo = msg.media.photo
-            if (!msg.message) response = await client.sendFile(chatSendId, { file: photo, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__` }) // messageless
-            if (msg.message) response = await client.sendFile(chatSendId, { file: photo, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}` }) // with message
+              const buffer = await client.downloadMedia(doc)
+             const tempDocPath = `./public/documents/temp-doc.${mimeType}`
+            fs.writeFileSync(tempDocPath, buffer)
+            
+            if (!msg.message) response = await client.sendFile(chatSendId, { file: tempDocPath, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__` }) // messageless
+            if (msg.message) response = await client.sendFile(chatSendId, { file: tempDocPath, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}` }) // with message
+            
             const msgObj = { id: response.id, fromId: msg.id, chatId: msg.peerId.channelId.value.toString(), message: msg.message }
             messages.push(msgObj)
             console.log('Msg com foto enviada!')
