@@ -13,7 +13,7 @@ const channels = [
 function findChannel(id) {
     const channel = channels.find(element => element.id == id)
     console.log(id)
-    if (channel) return ''
+    if (!channel) return ''
     return channel.name
 }
 
