@@ -83,7 +83,7 @@ async function eventTelegram(client, event) {
             // const tempDocPath = `./public/documents/temp-doc.${mimeType}`
             // fs.writeFileSync(tempDocPath, buffer)fs.writeFileSync(tempDocPath, buffer)
             if (!msg.message) response = await client.sendFile(chatSendId, { file: doc }) // messageless
-            if (msg.message) response = await client.sendFile(chatSendId, { file: doc, caption: msg.message }) // with message
+            if (msg.message) response = await client.sendFile(chatSendId, { file: doc, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}` }) // with message
             const msgObj = { id: response.id, fromId: msg.id, chatId: msg.peerId.channelId.value.toString(), message: msg.message }
             messages.push(msgObj)
             console.log(`Msg com '${mimeType}' enviada!`)
@@ -95,7 +95,7 @@ async function eventTelegram(client, event) {
             let response
             const photo = msg.media.photo
             if (!msg.message) response = await client.sendFile(chatSendId, { file: photo, caption: '' }) // messageless
-            if (msg.message) response = await client.sendFile(chatSendId, { file: photo, caption: msg.message }) // with message
+            if (msg.message) response = await client.sendFile(chatSendId, { file: photo, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}` }) // with message
             const msgObj = { id: response.id, fromId: msg.id, chatId: msg.peerId.channelId.value.toString(), message: msg.message }
             messages.push(msgObj)
             console.log('Msg com foto enviada!')
@@ -109,7 +109,7 @@ async function eventTelegram(client, event) {
             if (msg.replyTo) {
                 const msgReply = messages.find(element => element.chatId == msg.peerId.channelId.value && element.fromId === msg.replyTo.replyToMsgId)
                 if (msgReply) {
-                    response = await client.sendMessage(chatSendId, { message: msg.message, replyTo: msgReply.id })
+                    response = await client.sendMessage(chatSendId, { message: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}`, replyTo: msgReply.id })
                     console.log('Msg comum c/ reply enviada!')
                 } else { // reply not found in the Database, but is reply
                     response = await client.sendMessage(chatSendId, { message: msg.message })
