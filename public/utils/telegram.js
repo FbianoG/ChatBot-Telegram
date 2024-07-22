@@ -4,7 +4,7 @@ const fs = require('fs')
 const { TelegramClient } = require('telegram')
 const { StringSession } = require('telegram/sessions')
 const input = require('input')
-const { findChannel } = require('./channels')
+const { findChannel, channelActive } = require('./channels')
 
 const chatSendId = process.env.CHAT_SEND_ID
 const apiId = Number(process.env.API_ID)
@@ -15,9 +15,6 @@ let stringSession
 
 // let events = [{ ServerStart: new Date() }]
 let messages = []
-
-
-
 
 // Function to start the Client of Telegram
 async function startTelegramClient() {
@@ -56,6 +53,8 @@ async function eventTelegram(client, event) {
         if (event.className === 'UpdateUserStatus' && !event.message) return
 
         const msg = event.message
+        
+        if (!channelActive()) return
 
         // events.push(new Date(), msg)
 
