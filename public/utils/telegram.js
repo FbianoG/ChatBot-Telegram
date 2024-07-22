@@ -70,6 +70,7 @@ async function eventTelegram(client, event) {
             if (!msg.message) response = await client.sendFile(chatSendId, { file: doc, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__` }) // messageless
             if (msg.message) response = await client.sendFile(chatSendId, { file: doc, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}` }) // with message
             const msgObj = { id: response.id, fromId: msg.id, chatId: msg.peerId.channelId.value.toString(), message: msg.message }
+            messages.push(msgObj)
             console.log(`Msg com '${mimeType}' enviada!`)
             return
         }
@@ -81,6 +82,7 @@ async function eventTelegram(client, event) {
             if (!msg.message) response = await client.sendFile(chatSendId, { file: photo, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__` }) // messageless
             if (msg.message) response = await client.sendFile(chatSendId, { file: photo, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}` }) // with message
             const msgObj = { id: response.id, fromId: msg.id, chatId: msg.peerId.channelId.value.toString(), message: msg.message }
+            messages.push(msgObj)
             console.log('Msg com foto enviada!')
             return
         }
@@ -103,6 +105,7 @@ async function eventTelegram(client, event) {
                 console.log('Msg comum enviada!')
             }
             const msgObj = { id: response.id, fromId: msg.id, chatId: msg.peerId.channelId.value.toString(), message: msg.message }
+            messages.push(msgObj)
             return
         }
 
@@ -111,6 +114,7 @@ async function eventTelegram(client, event) {
             await client.sendMessage(chatSendId, { message: msg, quotedMessageId: 73 })
             console.log('Msg comum enviada!')
             const msgObj = { id: response.id, fromId: msg.id, chatId: msg.peerId.channelId.value.toString(), message: msg.message }
+            messages.push(msgObj)
             return
         }
 
