@@ -48,7 +48,6 @@ function channelActive(id) {
 // Function find the channel ID
 function findChannel(id) {
     const channel = channels.find(element => element.id == id)
-    console.log(id)
     if (!channel) return ''
     return channel.name
 }

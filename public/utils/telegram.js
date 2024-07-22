@@ -50,9 +50,11 @@ async function startTelegramClient() {
 async function eventTelegram(client, event) {
 
     try {
-        if (event.className === 'UpdateUserStatus' && !event.message) return
+        if (event.className === 'UpdateUserStatus' && !event.message && !event.message.peerId.channelId.value) return
 
         const msg = event.message
+
+        console.log(msg.peerId.channelId.value)
 
         if (!channelActive(msg.peerId.channelId.value)) return
 
