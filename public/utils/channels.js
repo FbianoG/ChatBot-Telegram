@@ -10,6 +10,11 @@ const channels = [
         active: false,
     },
     {
+        name: 'Odds Altas ⚽',
+        id: '1423275773',
+        active: true,
+    },
+    {
         name: 'Dupla Futebol ⚽',
         id: '1214308482',
         active: true,
