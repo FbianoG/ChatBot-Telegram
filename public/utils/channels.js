@@ -1,6 +1,6 @@
 const channels = [
     {
-        name: 'ChatTeste',
+        name: 'ChatTeste 💻',
         id: '2153116950',
         active: true
     },
@@ -30,13 +30,13 @@ const channels = [
         active: false,
     },
     {
-        name: 'Dupla Cantos ⚽',
+        name: 'Dupla Cantos 🚩',
         id: '1221399350',
         active: true,
     },
     {
         name: 'Dupla E-Sports 🎮',
-        id: '1480220495n',
+        id: '1480220495',
         active: false,
     },
 ]

@@ -43,14 +43,21 @@ async function startTelegramClient() {
     } catch (error) {
         console.log(error)
     }
-    // bot.launch()
+
+    bot.on('message', (msg) => {
+        console.log('(FAQ) Enviado!')
+        const chatId = msg.chat.id;
+        bot.telegram.sendMessage(chatId, fs.readFileSync('./public/documents/faq.txt', 'utf-8'));
+    })
+    bot.launch()
 }
 
 // Listen to all events on Telegram
 async function eventTelegram(client, event) {
 
     try {
-        if (event.className === 'UpdateUserStatus' && !event.message && !event.message.peerId.channelId.value) return
+
+        if (event.className != 'UpdateNewChannelMessage') return
 
         const msg = event.message
 
@@ -58,41 +65,43 @@ async function eventTelegram(client, event) {
 
         if (!channelActive(msg.peerId.channelId.value)) return
 
-        // events.push(new Date(), msg)
-
         // Receive documents
         if (msg?.media?.className === 'MessageMediaDocument') {
+
             let response
-            
+
             const mimeType = msg.media.document.mimeType.split('/')[1]
             const doc = event.message.media.document
             const buffer = await client.downloadMedia(doc)
             const tempDocPath = `./public/documents/temp-doc.${mimeType}`
             fs.writeFileSync(tempDocPath, buffer)
-            
+
             if (!msg.message) response = await client.sendFile(chatSendId, { file: tempDocPath, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__` }) // messageless
             if (msg.message) response = await client.sendFile(chatSendId, { file: tempDocPath, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}` }) // with message
+
             const msgObj = { id: response.id, fromId: msg.id, chatId: msg.peerId.channelId.value.toString(), message: msg.message }
             messages.push(msgObj)
+
             console.log(`Msg com '${mimeType}' enviada!`)
             return
         }
 
         // Receive photo
         if (msg?.media?.className === 'MessageMediaPhoto') {
+
             let response
-            
-            const mimeType = 'jpg'
+
             const photo = msg.media.photo
             const buffer = await client.downloadMedia(photo)
-            const tempDocPath = `./public/documents/temp-photo.${mimeType}`
+            const tempDocPath = `./public/documents/temp-photo.jpg`
             fs.writeFileSync(tempDocPath, buffer)
-            
+
             if (!msg.message) response = await client.sendFile(chatSendId, { file: tempDocPath, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__` }) // messageless
             if (msg.message) response = await client.sendFile(chatSendId, { file: tempDocPath, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}` }) // with message
-            
+
             const msgObj = { id: response.id, fromId: msg.id, chatId: msg.peerId.channelId.value.toString(), message: msg.message }
             messages.push(msgObj)
+
             console.log('Msg com foto enviada!')
             return
         }
@@ -102,7 +111,9 @@ async function eventTelegram(client, event) {
             let response
             // Is reply
             if (msg.replyTo) {
+
                 const msgReply = messages.find(element => element.chatId == msg.peerId.channelId.value && element.fromId === msg.replyTo.replyToMsgId)
+
                 if (msgReply) {
                     response = await client.sendMessage(chatSendId, { message: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}`, replyTo: msgReply.id })
                     console.log('Msg comum c/ reply enviada!')
@@ -114,17 +125,22 @@ async function eventTelegram(client, event) {
                 response = await client.sendMessage(chatSendId, { message: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}` })
                 console.log('Msg comum enviada!')
             }
+
             const msgObj = { id: response.id, fromId: msg.id, chatId: msg.peerId.channelId.value.toString(), message: msg.message }
             messages.push(msgObj)
+
             return
         }
 
         // Receive common message (Necessary?)
         if (typeof msg === 'string') {
+
             await client.sendMessage(chatSendId, { message: msg, quotedMessageId: 73 })
             console.log('Msg comum enviada!')
+
             const msgObj = { id: response.id, fromId: msg.id, chatId: msg.peerId.channelId.value.toString(), message: msg.message }
             messages.push(msgObj)
+
             return
         }
 
@@ -134,3 +150,6 @@ async function eventTelegram(client, event) {
 }
 
 module.exports = { startTelegramClient, messages }
+
+
+// UpdateNewChannelMessage
