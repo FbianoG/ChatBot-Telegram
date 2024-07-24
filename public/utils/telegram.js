@@ -1,20 +1,28 @@
-require('dotenv').config()
-const Telegraf = require('telegraf')
+// All
 const fs = require('fs')
+require('dotenv').config()
+
+// Libs Telegram
 const { TelegramClient } = require('telegram')
 const { StringSession } = require('telegram/sessions')
+const Telegraf = require('telegraf')
 const input = require('input')
+
+// Exports
+const { registerMessage, getMessages } = require('./registerMessages')
 const { findChannel, channelActive } = require('./channels')
 
+
+// Environment variables
 const chatSendId = process.env.CHAT_SEND_ID
 const apiId = Number(process.env.API_ID)
 const apiHash = process.env.API_HASH
 const bot = new Telegraf(process.env.BOT_TOKEN)
 
+// Variables
 let stringSession
-
 // let events = [{ ServerStart: new Date() }]
-let messages = []
+
 
 // Function to start the Client of Telegram
 async function startTelegramClient() {
@@ -61,7 +69,7 @@ async function eventTelegram(client, event) {
 
         const msg = event.message
 
-        console.log(msg.peerId.channelId.value)
+        console.log("ChannelId: " + msg.peerId.channelId.value)
 
         if (!channelActive(msg.peerId.channelId.value)) return
 
@@ -77,10 +85,10 @@ async function eventTelegram(client, event) {
             fs.writeFileSync(tempDocPath, buffer)
 
             if (!msg.message) response = await client.sendFile(chatSendId, { file: tempDocPath, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__` }) // messageless
-            if (msg.message) response = await client.sendFile(chatSendId, { file: tempDocPath, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}` }) // with message
+            else response = await client.sendFile(chatSendId, { file: tempDocPath, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}` }) // with message
 
             const msgObj = { id: response.id, fromId: msg.id, chatId: msg.peerId.channelId.value.toString(), message: msg.message }
-            messages.push(msgObj)
+            registerMessage(msgObj)
 
             console.log(`Msg com '${mimeType}' enviada!`)
             return
@@ -97,10 +105,10 @@ async function eventTelegram(client, event) {
             fs.writeFileSync(tempDocPath, buffer)
 
             if (!msg.message) response = await client.sendFile(chatSendId, { file: tempDocPath, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__` }) // messageless
-            if (msg.message) response = await client.sendFile(chatSendId, { file: tempDocPath, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}` }) // with message
+            else response = await client.sendFile(chatSendId, { file: tempDocPath, caption: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}` }) // with message
 
             const msgObj = { id: response.id, fromId: msg.id, chatId: msg.peerId.channelId.value.toString(), message: msg.message }
-            messages.push(msgObj)
+            registerMessage(msgObj)
 
             console.log('Msg com foto enviada!')
             return
@@ -112,22 +120,22 @@ async function eventTelegram(client, event) {
             // Is reply
             if (msg.replyTo) {
 
+                const messages = getMessages()
+
                 const msgReply = messages.find(element => element.chatId == msg.peerId.channelId.value && element.fromId === msg.replyTo.replyToMsgId)
 
                 if (msgReply) {
                     response = await client.sendMessage(chatSendId, { message: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}`, replyTo: msgReply.id })
                     console.log('Msg comum c/ reply enviada!')
-                } else { // reply not found in the Database, but is reply
-                    response = await client.sendMessage(chatSendId, { message: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}` })
-                    console.log('Msg comum c/ reply enviada! (s/ dados)')
                 }
+
             } else {
                 response = await client.sendMessage(chatSendId, { message: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}` })
                 console.log('Msg comum enviada!')
             }
 
             const msgObj = { id: response.id, fromId: msg.id, chatId: msg.peerId.channelId.value.toString(), message: msg.message }
-            messages.push(msgObj)
+            registerMessage(msgObj)
 
             return
         }
@@ -139,7 +147,7 @@ async function eventTelegram(client, event) {
             console.log('Msg comum enviada!')
 
             const msgObj = { id: response.id, fromId: msg.id, chatId: msg.peerId.channelId.value.toString(), message: msg.message }
-            messages.push(msgObj)
+            registerMessage(msgObj)
 
             return
         }
@@ -149,7 +157,4 @@ async function eventTelegram(client, event) {
     }
 }
 
-module.exports = { startTelegramClient, messages }
-
-
-// UpdateNewChannelMessage
+module.exports = { startTelegramClient }

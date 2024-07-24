@@ -1,51 +1,8 @@
-const channels = [
-    {
-        name: 'ChatTeste 💻',
-        id: '2153116950',
-        active: true
-    },
-    {
-        name: 'ChatRecebe',
-        id: '2134377722',
-        active: false,
-    },
-    {
-        name: 'Odds Altas ⚽',
-        id: '1423275773',
-        active: true,
-    },
-    {
-        name: 'Dupla Futebol ⚽',
-        id: '1214308482',
-        active: true,
-    },
-    {
-        name: 'Dupla Basquete 🏀',
-        id: '1216091692',
-        active: true,
-    },
-    {
-        name: 'Dupla FIFA 🎮',
-        id: '1355848104',
-        active: false,
-    },
-    {
-        name: 'Dupla Galgos 🐕‍🦺',
-        id: '1270361246',
-        active: false,
-    },
-    {
-        name: 'Dupla Cantos 🚩',
-        id: '1221399350',
-        active: true,
-    },
-    {
-        name: 'Dupla E-Sports 🎮',
-        id: '1480220495',
-        active: false,
-    },
-]
+const fs = require('fs')
+const channelsJson = fs.readFileSync('./public/json/channels.json', 'utf-8')
+const channels = JSON.parse(channelsJson)
 
+// Checks if the channel is active
 function channelActive(id) {
     return channels.some(element => element.id == id && element.active)
 }
