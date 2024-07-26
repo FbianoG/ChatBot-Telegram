@@ -13,7 +13,6 @@ const { registerMessage, getMessages } = require('./registerMessages')
 const { findChannel, channelActive } = require('./channels')
 const { sendMessageBot } = require('./chatBot')
 
-
 // Environment variables
 const chatSendId = process.env.CHAT_SEND_ID
 const apiId = Number(process.env.API_ID)
