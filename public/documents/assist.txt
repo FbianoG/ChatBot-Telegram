@@ -1,0 +1,15 @@
+Bem-vindo ao nosso Assistente Virtual 'ALL TIIPS BOT'!
+
+Por favor, selecione uma das opções abaixo digitando o número correspondente:
+
+1️⃣ - FAQ (Perguntas Frequentes)
+Obtenha respostas para as perguntas mais comuns sobre nosso serviço e funcionamento.
+
+2️⃣ - Canais de Repasse
+Saiba mais sobre os canais de repasse disponíveis.
+
+3️⃣ - IPTV (Streaming Tiips)
+Receba o melhor IPTV do Brasil. Filmes, séries, esportes e muito mais.
+
+4️⃣ - Falar com o Administrador
+Entre em contato diretamente com o administrador para resolver dúvidas específicas ou problemas.

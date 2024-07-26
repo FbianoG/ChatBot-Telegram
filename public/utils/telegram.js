@@ -11,6 +11,7 @@ const input = require('input')
 // Exports
 const { registerMessage, getMessages } = require('./registerMessages')
 const { findChannel, channelActive } = require('./channels')
+const { sendMessageBot } = require('./chatBot')
 
 
 // Environment variables
@@ -53,9 +54,11 @@ async function startTelegramClient() {
     }
 
     bot.on('message', (msg) => {
+        const chatId = msg.chat.id
+        const message = msg.message.text
+        const text = sendMessageBot(chatId, message)
+        bot.telegram.sendMessage(chatId, `${text}`)
         console.log('(FAQ) Enviado!')
-        const chatId = msg.chat.id;
-        bot.telegram.sendMessage(chatId, fs.readFileSync('./public/documents/faq.txt', 'utf-8'));
     })
     bot.launch()
 }
