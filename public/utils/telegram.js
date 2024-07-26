@@ -55,8 +55,8 @@ async function startTelegramClient() {
         const chatId = msg.chat.id
         const message = msg.message.text
         if (!chatId && !message) return
-        const text = sendMessageBot(chatId, message)
-        // bot.telegram.sendMessage(chatId, `${fs.readFileSync('./public/documents/assist.txt', 'utf-8')}`)
+        const text = await sendMessageBot(chatId, message)
+        bot.telegram.sendMessage(chatId, `${text}`)
         console.log('(FAQ) Enviado!')
     })
     bot.launch()
