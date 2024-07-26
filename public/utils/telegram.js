@@ -24,7 +24,6 @@ const bot = new Telegraf(process.env.BOT_TOKEN)
 let stringSession
 // let events = [{ ServerStart: new Date() }]
 
-
 // Function to start the Client of Telegram
 async function startTelegramClient() {
     try {
