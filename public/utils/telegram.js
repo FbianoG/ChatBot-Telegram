@@ -56,9 +56,9 @@ async function startTelegramClient() {
   //      const message = msg.message.text
   //      if (!chatId && !message) return
   //      const text = sendMessageBot(chatId, message)
-  //      bot.telegram.sendMessage(chatId, `${text}`)
-  //      console.log('(FAQ) Enviado!')
- //   })
+//      bot.telegram.sendMessage(chatId, `${text}`)
+//      console.log('(FAQ) Enviado!')
+//   })
  //   bot.launch()
 }
 
