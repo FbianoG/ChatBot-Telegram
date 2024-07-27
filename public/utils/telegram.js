@@ -51,27 +51,27 @@ async function startTelegramClient() {
         console.log(error)
     }
 
-    bot.on('message', (msg) => {
-        const chatId = msg.chat.id
-        const message = msg.message.text
-        if (!chatId && !message) return
-        const text = sendMessageBot(chatId, message)
-        bot.telegram.sendMessage(chatId, `${text}`)
-        console.log('(FAQ) Enviado!')
-    })
-    bot.launch()
+  //  bot.on('message', (msg) => {
+  //      const chatId = msg.chat.id
+  //      const message = msg.message.text
+  //      if (!chatId && !message) return
+  //      const text = sendMessageBot(chatId, message)
+  //      bot.telegram.sendMessage(chatId, `${text}`)
+  //      console.log('(FAQ) Enviado!')
+ //   })
+ //   bot.launch()
 }
 
 // Listen to all events on Telegram
 async function eventTelegram(client, event) {
 
     try {
-
+         console.log(event)
         if (event.className != 'UpdateNewChannelMessage') return
 
         const msg = event.message
 
-        console.log("ChannelId: " + msg.peerId.channelId.value)
+       // console.log("ChannelId: " + msg.peerId.channelId.value)
 
         if (!channelActive(msg.peerId.channelId.value)) return
 
