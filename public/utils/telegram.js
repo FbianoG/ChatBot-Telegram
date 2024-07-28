@@ -71,7 +71,7 @@ async function eventTelegram(client, event) {
 
         const msg = event.message
         
-        console.log(event)
+        // console.log(event)
 
         // console.log("ChannelId: " + msg.peerId.channelId.value)
 
