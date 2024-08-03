@@ -9,6 +9,11 @@
         "id": "2134377722",
         "active": false
     },
+        {
+        "name": "Ortega ⚽",
+        "id": "1234",
+        "active": false
+    },
     {
         "name": "Odds Altas ⚽",
         "id": "1423275773",
@@ -22,7 +27,7 @@
     {
         "name": "Dupla Basquete 🏀",
         "id": "1216091692",
-        "active": true
+        "active": false
     },
     {
         "name": "Dupla FIFA 🎮",
