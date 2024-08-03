@@ -73,7 +73,7 @@ async function eventTelegram(client, event) {
         
         // console.log(event)
 
-        // console.log("ChannelId: " + msg.peerId.channelId.value)
+        console.log("ChannelId: " + msg.peerId.channelId.value)
 
         if (!channelActive(msg.peerId.channelId.value)) return
 
