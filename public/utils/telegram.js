@@ -67,15 +67,29 @@ async function eventTelegram(client, event) {
 
     try {
 
-        if (event.className != 'UpdateNewChannelMessage') return
+        if (event.className != 'UpdateNewChannelMessage' && event.className != 'UpdateEditChannelMessage') return
 
         const msg = event.message
-        
-        // console.log(event)
 
         console.log("ChannelId: " + msg.peerId.channelId.value)
 
         if (!channelActive(msg.peerId.channelId.value)) return
+
+        // Edit message
+        if (event.className === 'UpdateEditChannelMessage') {
+
+            const messages = getMessages()
+
+            const findMessage = messages.find(element => element.chatId == msg.peerId.channelId.value && element.fromId === msg.id)
+
+            if (!findMessage) return
+
+            await client.editMessage(chatSendId, { message: findMessage.id, text: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}`, });
+
+            console.log(`Msg editada!`)
+
+            return
+        }
 
         // Receive documents
         if (msg?.media?.className === 'MessageMediaDocument') {
@@ -131,8 +145,11 @@ async function eventTelegram(client, event) {
                 if (msgReply) {
                     response = await client.sendMessage(chatSendId, { message: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}`, replyTo: msgReply.id })
                     console.log('Msg comum c/ reply enviada!')
+                } else {
+                    response = await client.sendMessage(chatSendId, { message: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}` })
+                    console.log('Msg comum (not found reply) enviada!')
                 }
-
+                
             } else {
                 response = await client.sendMessage(chatSendId, { message: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}` })
                 console.log('Msg comum enviada!')
