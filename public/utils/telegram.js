@@ -93,6 +93,11 @@ async function eventTelegram(client, event) {
         // Receive documents
         if (msg?.media?.className === 'MessageMediaDocument') {
 
+            console.log('Msg Doc retida!')
+            
+            return
+            
+            // Desativado envio de documentos --->
             let response
 
             const mimeType = msg.media.document.mimeType.split('/')[1]
