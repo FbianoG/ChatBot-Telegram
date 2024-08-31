@@ -27,11 +27,10 @@ let stringSession
 async function startTelegramClient() {
     try {
         console.log('Loading Client...')
-        if (fs.existsSync('./public/keys/session.txt')) {
-            const savedSession = fs.readFileSync('./public/keys/session.txt', 'utf-8')
-            stringSession = new StringSession(savedSession)
-        } else {
+        if (process.env.SESSION.trim() === '' || !process.env.SESSION) {
             stringSession = new StringSession('')
+        } else {
+            stringSession = new StringSession(process.env.SESSION)
         }
         const client = new TelegramClient(stringSession, apiId, apiHash, {
             connectionRetries: 9999,
@@ -45,8 +44,8 @@ async function startTelegramClient() {
             onError: (err) => console.log(err),
         })
         console.log('ChatBot is running!')
-        fs.writeFileSync('./public/keys/session.txt', client.session.save())
-        client.addEventHandler(async (event) => eventTelegram(client, event))
+        fs.writeFileSync('./public/keys/session.txt', client.session.save()) // usado em test para criar session session. Incluir valor depois no .env
+            client.addEventHandler(async (event) => eventTelegram(client, event))
     } catch (error) {
         console.log(error)
     }
@@ -149,7 +148,7 @@ async function eventTelegram(client, event) {
                     response = await client.sendMessage(chatSendId, { message: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}` })
                     console.log('Msg comum (not found reply) enviada!')
                 }
-                
+
             } else {
                 response = await client.sendMessage(chatSendId, { message: `✉️ **De:** __${findChannel(msg.peerId.channelId.value)}__\n\n${msg.message}` })
                 console.log('Msg comum enviada!')
