@@ -27,7 +27,7 @@ let stringSession
 async function startTelegramClient() {
     try {
         console.log('Loading Client...')
-        if (process.env.SESSION.trim() === '' || !process.env.SESSION) {
+        if (process.env.SESSION === '' || !process.env.SESSION) {
             stringSession = new StringSession('')
         } else {
             stringSession = new StringSession(process.env.SESSION)
